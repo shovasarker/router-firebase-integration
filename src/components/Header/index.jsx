@@ -1,7 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import useFirebase from '../../hooks/useFirebase'
 import blankProfile from '../../assets/images/blank-profile.svg'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { getAuth, signOut } from 'firebase/auth'
+import app from '../../firebase.init'
+
+const auth = getAuth(app)
 
 const Header = () => {
   const navLinks = [
@@ -11,7 +15,7 @@ const Header = () => {
     ['/register', 'Register'],
   ]
 
-  const { user, handleSignOut } = useFirebase()
+  const [user] = useAuthState(auth)
 
   return (
     <header>
@@ -30,7 +34,7 @@ const Header = () => {
             <button
               className='px-5 py-1.5 font-medium bg-blue-500 text-white rounded-[4px] shadow-lg shadow-blue-700/50 hover:shadow-blue-700/30'
               type='button'
-              onClick={handleSignOut}
+              onClick={() => signOut(auth)}
             >
               Sign Out
             </button>
